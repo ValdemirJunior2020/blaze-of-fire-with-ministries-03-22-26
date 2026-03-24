@@ -3,19 +3,14 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { theme } from "../../constants/theme";
-import { useAuth } from "../../context/AuthContext";
-import { isAdminEmail } from "../../constants/admin";
 
 export default function TabsLayout() {
-  const { user, loading } = useAuth();
-  const isAdmin = isAdminEmail(user?.email);
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         sceneStyle: {
-          backgroundColor: "transparent"
+          backgroundColor: "#050505"
         },
         tabBarStyle: {
           backgroundColor: "#060606",
@@ -82,25 +77,6 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="admin"
-        options={{
-          title: "Admin",
-          href: !loading && isAdmin ? "/(tabs)/admin" : null,
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "shield-checkmark" : "shield-checkmark-outline"}
-              size={size}
-              color={color}
-            />
-          )
-        }}
-      />
-
-      <Tabs.Screen name="admin-prayer-requests" options={{ href: null }} />
-      <Tabs.Screen name="admin-home-content" options={{ href: null }} />
-      <Tabs.Screen name="admin-ministries" options={{ href: null }} />
-
-      <Tabs.Screen
         name="profile"
         options={{
           title: "Me",
@@ -111,6 +87,34 @@ export default function TabsLayout() {
               color={color}
             />
           )
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin"
+        options={{
+          href: null
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-prayer-requests"
+        options={{
+          href: null
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-home-content"
+        options={{
+          href: null
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-ministries"
+        options={{
+          href: null
         }}
       />
 

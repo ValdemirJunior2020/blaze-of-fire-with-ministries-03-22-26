@@ -1,7 +1,6 @@
 ﻿// File: app/+not-found.tsx
-
-import { Link, Stack } from "expo-router";
 import React from "react";
+import { Link, Stack } from "expo-router";
 import { Text, View } from "react-native";
 
 export default function NotFoundScreen() {
@@ -39,7 +38,7 @@ export default function NotFoundScreen() {
           The route does not exist yet.
         </Text>
 
-        <Link href="/" style={{ color: "#D4AF37", fontSize: 18 }}>
+        <Link href="/(tabs)/home" style={{ color: "#D4AF37", fontSize: 18 }}>
           Go to Home
         </Link>
       </View>

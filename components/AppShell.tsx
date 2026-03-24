@@ -6,7 +6,7 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from "react-native";
 
 type Props = {
@@ -16,15 +16,13 @@ type Props = {
 
 export default function AppShell({ children, scroll = true }: Props) {
   return (
-    <View style={styles.root}>
-      <ImageBackground
-        source={require("../assets/images/bg.jpg")}
-        resizeMode="cover"
-        style={styles.background}
-        imageStyle={styles.image}
-      />
-
-      <View pointerEvents="none" style={styles.overlay} />
+    <ImageBackground
+      source={require("../assets/bg.jpg")}
+      resizeMode="cover"
+      style={styles.root}
+      imageStyle={styles.bgImage}
+    >
+      <View style={styles.overlay} />
 
       <KeyboardAvoidingView
         style={styles.contentLayer}
@@ -44,50 +42,38 @@ export default function AppShell({ children, scroll = true }: Props) {
           </View>
         )}
       </KeyboardAvoidingView>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    width: "100%"
-  },
-  background: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     width: "100%",
-    height: "100%"
+    backgroundColor: "#050505",
   },
-  image: {
-    opacity: 0.65
+  bgImage: {
+    opacity: 1,
   },
   overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.08)"
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.72)",
   },
   contentLayer: {
-    flex: 1
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
     padding: 20,
-    paddingBottom: 120
+    paddingBottom: 120,
   },
   noScrollContent: {
     flex: 1,
-    padding: 20
+    padding: 20,
   },
   content: {
     width: "100%",
     maxWidth: 760,
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 });
