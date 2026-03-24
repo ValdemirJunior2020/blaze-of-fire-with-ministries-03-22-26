@@ -10,22 +10,22 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         sceneStyle: {
-          backgroundColor: "#050505"
+          backgroundColor: "#050505",
         },
         tabBarStyle: {
           backgroundColor: "#060606",
           borderTopColor: theme.colors.border,
           height: 72,
           paddingTop: 8,
-          paddingBottom: 10
+          paddingBottom: 10,
         },
         tabBarLabelStyle: {
           fontFamily: "MontserratSemiBold",
           fontSize: 11,
-          marginTop: 2
+          marginTop: 2,
         },
         tabBarActiveTintColor: theme.colors.gold,
-        tabBarInactiveTintColor: "#8A8A8A"
+        tabBarInactiveTintColor: "#8A8A8A",
       }}
     >
       <Tabs.Screen
@@ -33,8 +33,12 @@ export default function TabsLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />
-          )
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
 
@@ -48,7 +52,7 @@ export default function TabsLayout() {
               size={size}
               color={color}
             />
-          )
+          ),
         }}
       />
 
@@ -58,7 +62,7 @@ export default function TabsLayout() {
           title: "Prayer",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="hands-pray" size={size} color={color} />
-          )
+          ),
         }}
       />
 
@@ -72,7 +76,7 @@ export default function TabsLayout() {
               size={size}
               color={color}
             />
-          )
+          ),
         }}
       />
 
@@ -86,35 +90,7 @@ export default function TabsLayout() {
               size={size}
               color={color}
             />
-          )
-        }}
-      />
-
-      <Tabs.Screen
-        name="admin"
-        options={{
-          href: null
-        }}
-      />
-
-      <Tabs.Screen
-        name="admin-prayer-requests"
-        options={{
-          href: null
-        }}
-      />
-
-      <Tabs.Screen
-        name="admin-home-content"
-        options={{
-          href: null
-        }}
-      />
-
-      <Tabs.Screen
-        name="admin-ministries"
-        options={{
-          href: null
+          ),
         }}
       />
 
@@ -128,7 +104,42 @@ export default function TabsLayout() {
               size={size}
               color={color}
             />
-          )
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="ministry/[slug]"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-prayer-requests"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-home-content"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin-ministries"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
