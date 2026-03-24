@@ -1,0 +1,8 @@
+Apostle Marcelo admin role inside the app:
+1. Post daily devotionals
+2. Post church announcements
+3. Read prayer requests
+4. Approve testimonies
+5. Update live links later
+6. Add event flyers later
+7. Send important church messages later

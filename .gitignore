@@ -1,0 +1,119 @@
+# Node.js / npm / Yarn / pnpm
+node_modules/
+npm-debug.log
+npm-debug.log*
+yarn-debug.log
+yarn-debug.log*
+yarn-error.log
+.pnpm-debug.log
+.pnpm-store/
+
+# Lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Expo / React Native
+.expo/
+.expo-shared/
+expo-env.d.ts
+.expo-updates/
+eas-build/
+dist/
+build/
+web-build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/keystores/
+ios/build/
+ios/Pods/
+ios/Podfile.lock
+DerivedData/
+
+# Metro / bundler
+.metro-health-check*
+*.watchman*
+.haste-map*
+
+# Logs & temp files
+logs/
+*.log
+*.logs
+*.log.*
+.DS_Store
+Thumbs.db
+
+# Environment variables & secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Editor & OS files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.sublime-*
+*.code-workspace
+*.swp
+*.swo
+*~
+.fleet/
+.devcontainer/
+
+# Testing / coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+cypress/videos/
+cypress/screenshots/
+
+# Build outputs & transpiled code
+out/
+*.tsbuildinfo
+
+# Dependency directories (alternative names)
+jspm_packages/
+bower_components/
+
+# Optional eslint / prettier cache
+.eslintcache
+.prettiercache
+
+# Local development overrides
+*.local.*
+
+# Optional large / generated files
+*.min.js
+*.min.css
+*.gz
+*.tgz
+*.zip
+
+# Bun
+.bun/
+bun.lockb
+
+# App signing / native artifacts
+*.jks
+*.keystore
+*.mobileprovision
+*.orig.*
+crashlytics.properties
+*.xcworkspace/xcshareddata/
+*.xcodeproj/xcshareddata/
+*.moved-aside
+
+# Optional local app config
+app.config.local.js
+app.json.local
+
+# Optional build artifacts
+*.aab
+*.apk
+*.ipa
