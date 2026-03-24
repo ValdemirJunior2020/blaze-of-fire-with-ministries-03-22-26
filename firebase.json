@@ -1,9 +1,6 @@
 {
-  "functions": {
-    "source": "functions"
-  },
   "firestore": {
-    "rules": "app/firestore.rules",
+    "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   }
 }

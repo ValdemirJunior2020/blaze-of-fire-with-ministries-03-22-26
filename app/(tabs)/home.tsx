@@ -1,224 +1,191 @@
 // File: app/(tabs)/home.tsx
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import AppShell from "../../components/AppShell";
 import BrandHeader from "../../components/BrandHeader";
 import GoldButton from "../../components/GoldButton";
 import { theme } from "../../constants/theme";
-import { getVerseOfTheDay } from "../../data/verses";
 import { useAuth } from "../../context/AuthContext";
 import { isAdminEmail } from "../../constants/admin";
 import { defaultHomeContent, getHomeContent } from "../../services/churchContent";
-import { HomeContent } from "../../types/churchContent";
 
-function HomeInfoCard({
+type HomeContent = {
+  weeklyMessage: string;
+  serviceSchedule: string;
+  nextEvent: string;
+  latestAnnouncement: string;
+  pastorShortNote: string;
+};
+
+function InfoCard({
   icon,
   title,
-  body
+  value,
 }: {
   icon: keyof typeof Ionicons.glyphMap;
   title: string;
-  body: string;
+  value: string;
 }) {
   return (
-    <View
-      style={{
-        backgroundColor: "rgba(17,17,17,0.9)",
-        borderWidth: 1,
-        borderColor: theme.colors.border,
-        borderRadius: 24,
-        padding: 18,
-        marginBottom: 16
-      }}
-    >
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-        <Ionicons name={icon} size={20} color={theme.colors.gold} />
-        <Text
-          style={{
-            color: theme.colors.gold,
-            fontFamily: "CinzelBold",
-            fontSize: 19,
-            marginLeft: 10,
-            flex: 1
-          }}
-        >
-          {title}
-        </Text>
+    <View style={styles.card}>
+      <View style={styles.cardTitleRow}>
+        <Ionicons name={icon} size={18} color={theme.colors.gold} />
+        <Text style={styles.cardTitle}>{title}</Text>
       </View>
-
-      <Text
-        style={{
-          color: theme.colors.text,
-          fontFamily: "MontserratMedium",
-          fontSize: 15,
-          lineHeight: 24
-        }}
-      >
-        {body}
-      </Text>
+      <Text style={styles.cardText}>{value}</Text>
     </View>
   );
 }
 
 export default function HomeScreen() {
-  const verse = getVerseOfTheDay();
   const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
   const [content, setContent] = useState<HomeContent>(defaultHomeContent);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
+    let mounted = true;
+
+    async function load() {
       try {
         const data = await getHomeContent();
-        setContent(data);
+        if (mounted) {
+          setContent(data);
+        }
       } catch (error) {
         console.error("Failed to load home content:", error);
+        if (mounted) {
+          setContent(defaultHomeContent);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
-    };
+    }
 
     void load();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const canEditHome = isAdminEmail(user?.email);
+  const isAdmin = isAdminEmail(user?.email);
 
   return (
     <AppShell>
       <BrandHeader size="sm" />
 
-      <View
-        style={{
-          backgroundColor: "rgba(17,17,17,0.9)",
-          borderWidth: 1,
-          borderColor: theme.colors.border,
-          borderRadius: 24,
-          padding: 20,
-          marginBottom: 18
-        }}
-      >
-        <Text
-          style={{
-            color: theme.colors.gold,
-            fontFamily: "CinzelBold",
-            fontSize: 24,
-            marginBottom: 10,
-            textAlign: "center"
-          }}
-        >
-          Welcome to Blaze of Fire
-        </Text>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {loading ? (
+          <View style={styles.loadingWrap}>
+            <ActivityIndicator size="large" color={theme.colors.gold} />
+          </View>
+        ) : (
+          <>
+            <InfoCard
+              icon="calendar-outline"
+              title="Weekly Message"
+              value={content.weeklyMessage}
+            />
+            <InfoCard
+              icon="time-outline"
+              title="Service Schedule"
+              value={content.serviceSchedule}
+            />
+            <InfoCard
+              icon="megaphone-outline"
+              title="Next Event"
+              value={content.nextEvent}
+            />
+            <InfoCard
+              icon="notifications-outline"
+              title="Latest Announcement"
+              value={content.latestAnnouncement}
+            />
+            <InfoCard
+              icon="chatbubble-ellipses-outline"
+              title="Pastor's Short Note"
+              value={content.pastorShortNote}
+            />
+            <InfoCard
+              icon="book-outline"
+              title="Verse of the Day"
+              value={"His compassions never fail. They are new every morning; great is Your faithfulness.\n\nLamentations 3:22-23"}
+            />
 
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontFamily: "MontserratMedium",
-            fontSize: 15,
-            lineHeight: 24,
-            textAlign: "center"
-          }}
-        >
-          Stay connected with this week&apos;s word, church schedule, announcements, and ministry opportunities.
-        </Text>
-      </View>
+            {isAdmin && (
+              <GoldButton
+                title="Edit Home Content"
+                onPress={() => router.push("/(tabs)/admin-home-content")}
+              />
+            )}
 
-      {loading ? (
-        <ActivityIndicator size="large" color={theme.colors.gold} />
-      ) : (
-        <>
-          <HomeInfoCard
-            icon="megaphone-outline"
-            title="This Week's Message"
-            body={content.weeklyMessage}
-          />
-          <HomeInfoCard
-            icon="time-outline"
-            title="Service Schedule"
-            body={content.serviceSchedule}
-          />
-          <HomeInfoCard
-            icon="calendar-outline"
-            title="Next Event"
-            body={content.nextEvent}
-          />
-          <HomeInfoCard
-            icon="notifications-outline"
-            title="Latest Announcement"
-            body={content.latestAnnouncement}
-          />
-          <HomeInfoCard
-            icon="chatbubble-ellipses-outline"
-            title="Pastor's Short Note"
-            body={content.pastorShortNote}
-          />
-        </>
-      )}
+            <GoldButton
+              title="See Ministries"
+              onPress={() => router.push("/ministries")}
+            />
 
-      <View
-        style={{
-          backgroundColor: "rgba(17,17,17,0.9)",
-          borderWidth: 1,
-          borderColor: theme.colors.border,
-          borderRadius: 24,
-          padding: 20,
-          marginBottom: 18
-        }}
-      >
-        <Text
-          style={{
-            color: theme.colors.gold,
-            fontFamily: "CinzelBold",
-            fontSize: 22,
-            marginBottom: 12
-          }}
-        >
-          Verse of the Day
-        </Text>
+            <GoldButton
+              title="Watch Live Inside the App"
+              onPress={() => router.push("/(tabs)/live")}
+            />
 
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontFamily: "MontserratSemiBold",
-            fontSize: 16,
-            lineHeight: 30,
-            marginBottom: 12
-          }}
-        >
-          {verse.text}
-        </Text>
+            <GoldButton
+              title="Send Prayer Request"
+              onPress={() => router.push("/(tabs)/prayer")}
+            />
 
-        <Text
-          style={{
-            color: theme.colors.gold,
-            fontFamily: "MontserratBold",
-            fontSize: 15
-          }}
-        >
-          {verse.reference}
-        </Text>
-      </View>
+            <GoldButton
+              title="See Community"
+              onPress={() => router.push("/(tabs)/community")}
+            />
 
-      {canEditHome ? (
-        <>
-          <GoldButton
-            title="Edit Home Content"
-            onPress={() => router.push("/(tabs)/admin-home-content")}
-          />
-          <View style={{ height: 14 }} />
-        </>
-      ) : null}
-
-      <GoldButton title="See Ministries" onPress={() => router.push("/ministries")} />
-      <View style={{ height: 14 }} />
-      <GoldButton title="Watch Live Inside the App" onPress={() => router.push("/live")} />
-      <View style={{ height: 14 }} />
-      <GoldButton title="Send Prayer Request" onPress={() => router.push("/prayer")} />
-      <View style={{ height: 14 }} />
-      <GoldButton title="See Community" onPress={() => router.push("/community")} />
-      <View style={{ height: 14 }} />
-      <GoldButton title="Open Profile" onPress={() => router.push("/profile")} />
+            <GoldButton
+              title="Open Profile"
+              onPress={() => router.push("/(tabs)/profile")}
+            />
+          </>
+        )}
+      </ScrollView>
     </AppShell>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    paddingBottom: 32,
+  },
+  loadingWrap: {
+    minHeight: 300,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  card: {
+    backgroundColor: "rgba(12,12,12,0.88)",
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: "rgba(212,175,55,0.18)",
+    padding: 18,
+    marginBottom: 14,
+  },
+  cardTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    gap: 8,
+  },
+  cardTitle: {
+    color: theme.colors.gold,
+    fontFamily: "CinzelBold",
+    fontSize: 20,
+  },
+  cardText: {
+    color: "#F0F0F0",
+    fontFamily: "MontserratMedium",
+    fontSize: 14,
+    lineHeight: 24,
+  },
+});
