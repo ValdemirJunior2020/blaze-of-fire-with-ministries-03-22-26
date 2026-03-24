@@ -39,6 +39,20 @@ function InfoCard({
   );
 }
 
+function ButtonRow({
+  title,
+  onPress,
+}: {
+  title: string;
+  onPress: () => void;
+}) {
+  return (
+    <View style={styles.buttonWrap}>
+      <GoldButton title={title} onPress={onPress} />
+    </View>
+  );
+}
+
 export default function HomeScreen() {
   const { user } = useAuth();
   const [content, setContent] = useState<HomeContent>(defaultHomeContent);
@@ -117,33 +131,33 @@ export default function HomeScreen() {
             />
 
             {isAdmin && (
-              <GoldButton
+              <ButtonRow
                 title="Edit Home Content"
                 onPress={() => router.push("/(tabs)/admin-home-content")}
               />
             )}
 
-            <GoldButton
+            <ButtonRow
               title="See Ministries"
               onPress={() => router.push("/ministries")}
             />
 
-            <GoldButton
+            <ButtonRow
               title="Watch Live Inside the App"
               onPress={() => router.push("/(tabs)/live")}
             />
 
-            <GoldButton
+            <ButtonRow
               title="Send Prayer Request"
               onPress={() => router.push("/(tabs)/prayer")}
             />
 
-            <GoldButton
+            <ButtonRow
               title="See Community"
               onPress={() => router.push("/(tabs)/community")}
             />
 
-            <GoldButton
+            <ButtonRow
               title="Open Profile"
               onPress={() => router.push("/(tabs)/profile")}
             />
@@ -187,5 +201,8 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratMedium",
     fontSize: 14,
     lineHeight: 24,
+  },
+  buttonWrap: {
+    marginBottom: 12,
   },
 });
